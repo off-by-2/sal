@@ -1,13 +1,10 @@
-# Environment variables
-include .env
-export
-
 # Helpers
 GO_CMD=go
 GO_RUN=$(GO_CMD) run
 GO_TEST=$(GO_CMD) test
 GO_BUILD=$(GO_CMD) build
 MIGRATE_CMD=$(GO_RUN) ./cmd/migrate/main.go
+API_CMD=$(GO_RUN) ./cmd/api
 
 # Database Connection (for psql)
 DB_DSN=$(DATABASE_URL)
@@ -29,7 +26,7 @@ build: ## Build the API binary
 
 run: ## Run the API locally
 	@echo "Starting API..."
-	$(GO_RUN) ./cmd/api
+	$(API_CMD)
 
 test: ## Run unit tests with coverage
 	@echo "Running tests..."
@@ -66,7 +63,7 @@ docker-logs: ## View container logs
 # docs
 docs-serve: ## Serve documentation locally (pkgsite)
 	@echo "Opening http://localhost:6060/github.com/off-by-2/sal"
-	pkgsite -http=:6060
+	$(shell go env GOPATH)/bin/pkgsite -http=:6060
 
 docs-generate: ## Generate API Reference markdown (requires gomarkdoc)
 	gomarkdoc --output docs/reference.md ./...
