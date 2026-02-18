@@ -24,11 +24,13 @@ jobs:
 
       - name: Generate Content
         run: |
+          mkdir -p docs
+          
           # Generate API reference
-          gomarkdoc --output reference.md ./...
+          gomarkdoc --output docs/reference.md ./...
           
           # Use README as homepage
-          cp README.md index.md
+          cp README.md docs/index.md
 
       - name: Setup Python
         uses: actions/setup-python@v5
