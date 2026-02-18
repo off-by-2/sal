@@ -9,7 +9,6 @@ services:
       POSTGRES_PASSWORD: localdev
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./salvia_schema.sql:/docker-entrypoint-initdb.d/schema.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U salvia -d salvia"]
       interval: 5s
