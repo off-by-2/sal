@@ -19,15 +19,30 @@ jobs:
         with:
           go-version: '1.24'
 
-      - name: Install gopages
-        run: go install github.com/johnstarich/go/gopages@latest
+      - name: Install gomarkdoc
+        run: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest
 
-      - name: Generate Docs
+      - name: Generate Content
         run: |
-          gopages -base "/sal" -out dist
+          # Generate API reference
+          gomarkdoc --output reference.md ./...
+          
+          # Use README as homepage
+          cp README.md index.md
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+
+      - name: Install MkDocs Material
+        run: pip install mkdocs-material
+
+      - name: Build Site
+        run: mkdocs build
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: dist
+          folder: site
           branch: gh-pages
