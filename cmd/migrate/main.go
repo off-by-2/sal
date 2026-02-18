@@ -1,6 +1,9 @@
+// Package main is the entrypoint for the database migration tool.
+// It uses pressly/goose to manage database schema versions.
 package main
 
 import (
+	"context"
 	"flag"
 	"log"
 
@@ -11,6 +14,7 @@ import (
 	"github.com/off-by-2/sal/migrations"
 )
 
+// main parses flags and runs the requested migration command.
 func main() {
 	var command string
 	flag.StringVar(&command, "cmd", "up", "Migration command (up, down, status, version)")
@@ -32,7 +36,7 @@ func main() {
 
 	goose.SetBaseFS(migrations.FS)
 
-	if err := goose.Run(command, db, "."); err != nil {
+	if err := goose.RunContext(context.Background(), command, db, "."); err != nil {
 		log.Fatalf("goose %v: %v", command, err)
 	}
 }
