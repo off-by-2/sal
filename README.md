@@ -4,6 +4,9 @@ Go backend for Salvia — an AI-powered clinical note generation platform.
 
 Staff record audio notes about patient care, AI transcribes and structures them into clinical forms, and verified notes are added to patient timelines.
 
+[![Quality](https://github.com/off-by-2/sal/actions/workflows/quality.yml/badge.svg)](https://github.com/off-by-2/sal/actions/workflows/quality.yml)
+[![Documentation](https://github.com/off-by-2/sal/actions/workflows/docs.yml/badge.svg)](https://github.com/off-by-2/sal/actions/workflows/docs.yml)
+
 ## Prerequisites
 
 - [Go 1.23+](https://go.dev/dl/)
@@ -130,6 +133,17 @@ sal/
 ├── Dockerfile          # Production build
 └── .env.example        # Environment template
 ```
+
+## Documentation
+
+- **Development**: Run `pkgsite -http=:6060` locally.
+- **Production**: Documentation is automatically deployed to GitHub Pages :
+  [https://off-by-2.github.io/sal/](https://off-by-2.github.io/sal/)
+
+To edit documentation:
+- **Home**: Edit `README.md`.
+- **API**: Edit Go code comments (auto-generated).
+- **Navigation**: Edit `mkdocs.yml`.
 
 ## License
 
