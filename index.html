@@ -448,6 +448,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#development-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Development Commands
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#environment-variables" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -466,23 +477,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Database">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#tables" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Tables
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -675,6 +669,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#development-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Development Commands
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#environment-variables" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -693,23 +698,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Database">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#tables" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Tables
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -797,21 +785,58 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>postgres<span class="w"> </span>-d
 </code></pre></div>
 <h3 id="3-initialize-schema-migrations">3. Initialize Schema (Migrations)</h3>
-<p>Run the migration tool to create tables:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>go<span class="w"> </span>run<span class="w"> </span>./cmd/migrate<span class="w"> </span>-cmd<span class="o">=</span>up
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>make<span class="w"> </span>migrate-up
 </code></pre></div>
-<p>This applies the schema from <code>migrations/</code>.</p>
-<p>Verify it's working:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>sal-postgres-1<span class="w"> </span>psql<span class="w"> </span>-U<span class="w"> </span>salvia<span class="w"> </span>-d<span class="w"> </span>salvia<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;\dt&#39;</span>
-</code></pre></div>
-<p>You should see 19 tables listed.</p>
 <h3 id="4-run-the-api">4. Run the API</h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>go<span class="w"> </span>run<span class="w"> </span>./cmd/api
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>make<span class="w"> </span>run
 </code></pre></div>
-<p>The API will be available at <code>http://localhost:8000</code>.</p>
 <h3 id="5-verify">5. Verify</h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>curl<span class="w"> </span>http://localhost:8000/health
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>make<span class="w"> </span><span class="nb">test</span>
 </code></pre></div>
+<h2 id="development-commands">Development Commands</h2>
+<p>We use <code>make</code> for common tasks:</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>make all</code></td>
+<td>Run linter, tests, and build</td>
+</tr>
+<tr>
+<td><code>make run</code></td>
+<td>Run API locally</td>
+</tr>
+<tr>
+<td><code>make test</code></td>
+<td>Run tests with coverage</td>
+</tr>
+<tr>
+<td><code>make lint</code></td>
+<td>Run code quality checks</td>
+</tr>
+<tr>
+<td><code>make migrate-up</code></td>
+<td>Apply database migrations</td>
+</tr>
+<tr>
+<td><code>make migrate-down</code></td>
+<td>Rollback last migration</td>
+</tr>
+<tr>
+<td><code>make docker-up</code></td>
+<td>Start local Postgres</td>
+</tr>
+<tr>
+<td><code>make docs-serve</code></td>
+<td>View local documentation</td>
+</tr>
+</tbody>
+</table>
 <h2 id="environment-variables">Environment Variables</h2>
 <table>
 <thead>
@@ -842,116 +867,29 @@
 <h2 id="database">Database</h2>
 <p>The schema is managed by <a href="https://github.com/pressly/goose">goose</a> migrations in <code>migrations/</code>.</p>
 <p><strong>To reset the database</strong> (drops all data):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>down<span class="w"> </span>-v
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>postgres<span class="w"> </span>-d
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>go<span class="w"> </span>run<span class="w"> </span>./cmd/migrate<span class="w"> </span>-cmd<span class="o">=</span>up
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>down<span class="w"> </span>-v
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>postgres<span class="w"> </span>-d
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>go<span class="w"> </span>run<span class="w"> </span>./cmd/migrate<span class="w"> </span>-cmd<span class="o">=</span>up
 </code></pre></div>
-<h3 id="tables">Tables</h3>
-<table>
-<thead>
-<tr>
-<th>Table</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>users</code></td>
-<td>User accounts and authentication</td>
-</tr>
-<tr>
-<td><code>organizations</code></td>
-<td>Multi-tenant organizations</td>
-</tr>
-<tr>
-<td><code>staff</code></td>
-<td>Staff membership with role-based permissions (JSONB)</td>
-</tr>
-<tr>
-<td><code>staff_invitations</code></td>
-<td>Token-based staff invite flow</td>
-</tr>
-<tr>
-<td><code>groups</code></td>
-<td>Departments/wards within an org</td>
-</tr>
-<tr>
-<td><code>staff_group_assignments</code></td>
-<td>Staff ↔ group membership</td>
-</tr>
-<tr>
-<td><code>beneficiaries</code></td>
-<td>Patients/clients</td>
-</tr>
-<tr>
-<td><code>beneficiary_group_assignments</code></td>
-<td>Patient admission tracking</td>
-</tr>
-<tr>
-<td><code>form_templates</code></td>
-<td>Versioned clinical form templates</td>
-</tr>
-<tr>
-<td><code>template_group_visibility</code></td>
-<td>Template access control per group</td>
-</tr>
-<tr>
-<td><code>document_flows</code></td>
-<td>Multi-step form workflows</td>
-</tr>
-<tr>
-<td><code>document_flow_steps</code></td>
-<td>Individual steps in a flow</td>
-</tr>
-<tr>
-<td><code>audio_notes</code></td>
-<td>Voice recordings with offline sync support</td>
-</tr>
-<tr>
-<td><code>audio_note_attachments</code></td>
-<td>Images/documents attached to recordings</td>
-</tr>
-<tr>
-<td><code>generated_notes</code></td>
-<td>AI-generated clinical notes (draft → verified → submitted)</td>
-</tr>
-<tr>
-<td><code>note_edit_history</code></td>
-<td>Audit trail for note edits</td>
-</tr>
-<tr>
-<td><code>timeline_entries</code></td>
-<td>Patient activity feed</td>
-</tr>
-<tr>
-<td><code>activity_log</code></td>
-<td>System-wide audit log</td>
-</tr>
-<tr>
-<td><code>deleted_notes_archive</code></td>
-<td>Soft-delete archive for compliance</td>
-</tr>
-</tbody>
-</table>
 <h2 id="docker">Docker</h2>
 <p>Run the full stack (API + database):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up
 </code></pre></div>
 <p>Or just the database (recommended for development — run Go natively for faster iteration):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>postgres<span class="w"> </span>-d
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>go<span class="w"> </span>run<span class="w"> </span>./cmd/api
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>postgres<span class="w"> </span>-d
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>go<span class="w"> </span>run<span class="w"> </span>./cmd/api
 </code></pre></div>
 <h2 id="project-structure">Project Structure</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>sal/
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>├── cmd/api/            # Application entrypoint
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>├── internal/
-<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>│   ├── config/         # Environment config loading
-<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>│   ├── database/       # PostgreSQL connection (pgx)
-<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>│   └── response/       # Standardized JSON responses
-<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>├── migrations/         # Database schema (goose)
-<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>├── docker-compose.yml  # Local dev (Postgres + API)
-<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>├── Dockerfile          # Production build
-<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>└── .env.example        # Environment template
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>sal/
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>├── cmd/api/            # Application entrypoint
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>├── internal/
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>│   ├── config/         # Environment config loading
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>│   ├── database/       # PostgreSQL connection (pgx)
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>│   └── response/       # Standardized JSON responses
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>├── migrations/         # Database schema (goose)
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>├── docker-compose.yml  # Local dev (Postgres + API)
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>├── Dockerfile          # Production build
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>└── .env.example        # Environment template
 </code></pre></div>
 <h2 id="documentation">Documentation</h2>
 <ul>
