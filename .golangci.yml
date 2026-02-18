@@ -22,11 +22,7 @@ linters-settings:
   revive:
     rules:
       - name: exported
-        severity: warning
-        arguments:
-          - disableStutteringCheck: true
       - name: package-comments
-        severity: warning
   goimports:
     local-prefixes: github.com/off-by-2/sal
 
