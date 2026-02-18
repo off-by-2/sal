@@ -30,35 +30,36 @@ docker compose up postgres -d
 
 ### 3. Initialize Schema (Migrations)
 
-Run the migration tool to create tables:
-
 ```bash
-go run ./cmd/migrate -cmd=up
+make migrate-up
 ```
-
-This applies the schema from `migrations/`.
-
-Verify it's working:
-
-```bash
-docker exec sal-postgres-1 psql -U salvia -d salvia -c '\dt'
-```
-
-You should see 19 tables listed.
 
 ### 4. Run the API
 
 ```bash
-go run ./cmd/api
+make run
 ```
-
-The API will be available at `http://localhost:8000`.
 
 ### 5. Verify
 
 ```bash
-curl http://localhost:8000/health
+make test
 ```
+
+## Development Commands
+
+We use `make` for common tasks:
+
+| Command | Description |
+|---------|-------------|
+| `make all` | Run linter, tests, and build |
+| `make run` | Run API locally |
+| `make test` | Run tests with coverage |
+| `make lint` | Run code quality checks |
+| `make migrate-up` | Apply database migrations |
+| `make migrate-down` | Rollback last migration |
+| `make docker-up` | Start local Postgres |
+| `make docs-serve` | View local documentation |
 
 ## Environment Variables
 
@@ -79,30 +80,6 @@ docker compose down -v
 docker compose up postgres -d
 go run ./cmd/migrate -cmd=up
 ```
-
-### Tables
-
-| Table | Purpose |
-|-------|---------|
-| `users` | User accounts and authentication |
-| `organizations` | Multi-tenant organizations |
-| `staff` | Staff membership with role-based permissions (JSONB) |
-| `staff_invitations` | Token-based staff invite flow |
-| `groups` | Departments/wards within an org |
-| `staff_group_assignments` | Staff ↔ group membership |
-| `beneficiaries` | Patients/clients |
-| `beneficiary_group_assignments` | Patient admission tracking |
-| `form_templates` | Versioned clinical form templates |
-| `template_group_visibility` | Template access control per group |
-| `document_flows` | Multi-step form workflows |
-| `document_flow_steps` | Individual steps in a flow |
-| `audio_notes` | Voice recordings with offline sync support |
-| `audio_note_attachments` | Images/documents attached to recordings |
-| `generated_notes` | AI-generated clinical notes (draft → verified → submitted) |
-| `note_edit_history` | Audit trail for note edits |
-| `timeline_entries` | Patient activity feed |
-| `activity_log` | System-wide audit log |
-| `deleted_notes_archive` | Soft-delete archive for compliance |
 
 ## Docker
 
