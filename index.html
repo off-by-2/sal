@@ -509,6 +509,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Documentation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#license" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -725,6 +736,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Documentation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#license" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -758,6 +780,8 @@
 <h1 id="sal">Sal</h1>
 <p>Go backend for Salvia — an AI-powered clinical note generation platform.</p>
 <p>Staff record audio notes about patient care, AI transcribes and structures them into clinical forms, and verified notes are added to patient timelines.</p>
+<p><a href="https://github.com/off-by-2/sal/actions/workflows/quality.yml"><img alt="Quality" src="https://github.com/off-by-2/sal/actions/workflows/quality.yml/badge.svg" /></a>
+<a href="https://github.com/off-by-2/sal/actions/workflows/docs.yml"><img alt="Documentation" src="https://github.com/off-by-2/sal/actions/workflows/docs.yml/badge.svg" /></a></p>
 <h2 id="prerequisites">Prerequisites</h2>
 <ul>
 <li><a href="https://go.dev/dl/">Go 1.23+</a></li>
@@ -929,6 +953,16 @@
 <a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>├── Dockerfile          # Production build
 <a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>└── .env.example        # Environment template
 </code></pre></div>
+<h2 id="documentation">Documentation</h2>
+<ul>
+<li><strong>Development</strong>: Run <code>pkgsite -http=:6060</code> locally.</li>
+<li><strong>Production</strong>: Documentation is automatically deployed to GitHub Pages :
+  <a href="https://off-by-2.github.io/sal/">https://off-by-2.github.io/sal/</a></li>
+</ul>
+<p>To edit documentation:
+- <strong>Home</strong>: Edit <code>README.md</code>.
+- <strong>API</strong>: Edit Go code comments (auto-generated).
+- <strong>Navigation</strong>: Edit <code>mkdocs.yml</code>.</p>
 <h2 id="license">License</h2>
 <p>MIT License with Commons Clause — see <a href="LICENSE">LICENSE</a>.</p>
 
