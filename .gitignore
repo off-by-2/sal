@@ -1,0 +1,16 @@
+# Schema dump 
+salvia_schema.sql
+
+# Environment
+.env
+
+# Go binary
+/sal
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
