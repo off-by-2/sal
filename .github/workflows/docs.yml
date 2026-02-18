@@ -4,38 +4,27 @@ on:
   push:
     branches:
       - main
-    paths:
-      - '**/*.go'
-      - 'go.mod'
-      - '.github/workflows/docs.yml'
 
 permissions:
   contents: write
 
 jobs:
-  generate:
-    name: Generate API Reference
+  gopages:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: main
 
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
           go-version: '1.24'
 
-      - name: Install gomarkdoc
-        run: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest
-
-      - name: Generate Reference
-        run: |
-          mkdir -p docs
-          gomarkdoc --output docs/reference.md ./...
-
-      - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v5
+      - name: Generate and Publish Docs (gopages)
+        uses: johnstarich/go/gopages@v1
         with:
-          commit_message: "docs: update api reference [skip ci]"
-          file_pattern: docs/reference.md
+          # Deploy to gh-pages branch automatically.
+          # The site will be available at https://<user>.github.io/sal/
+          gh-pages-user: "github-actions-bot"
+          gh-pages-email: "actions@github.com"
+          enable_index: true # Generates index.html listing all packages
+          base: "/sal"       # Necessary for GitHub Pages hosting (repository name)
