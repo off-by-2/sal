@@ -35,7 +35,7 @@ test: ## Run unit tests with coverage
 
 lint: ## Run golangci-lint
 	@echo "Running linter..."
-	golangci-lint run
+	$(shell go env GOPATH)/bin/golangci-lint run
 
 clean: ## Clean build artifacts
 	rm -rf bin/ docs/ docs.go
@@ -70,7 +70,7 @@ docs-serve: ## Serve documentation locally (pkgsite)
 	$(shell go env GOPATH)/bin/pkgsite -http=:6060
 
 docs-generate: ## Generate API Reference markdown (requires gomarkdoc)
-	gomarkdoc --output docs/reference.md ./...
+	$(shell go env GOPATH)/bin/gomarkdoc --output docs/reference.md ./...
 
 swagger: ## Generate Swagger docs
 	$(shell go env GOPATH)/bin/swag init -g cmd/api/main.go --output docs
