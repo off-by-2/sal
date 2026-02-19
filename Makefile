@@ -37,6 +37,10 @@ lint: ## Run golangci-lint
 	@echo "Running linter..."
 	golangci-lint run
 
+clean: ## Clean build artifacts
+	rm -rf bin/ docs/ docs.go
+
+
 # database
 migrate-up: ## Apply all pending migrations
 	$(MIGRATE_CMD) -cmd=up
@@ -67,3 +71,6 @@ docs-serve: ## Serve documentation locally (pkgsite)
 
 docs-generate: ## Generate API Reference markdown (requires gomarkdoc)
 	gomarkdoc --output docs/reference.md ./...
+
+swagger: ## Generate Swagger docs
+	$(shell go env GOPATH)/bin/swag init -g cmd/api/main.go --output docs

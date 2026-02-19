@@ -1,3 +1,20 @@
+// Package main serves as the entry point for the Sal API server.
+// It handles dependency injection, route configuration, and graceful shutdown.
+//
+// @title Sal API
+// @version 1.0
+// @description The high-performance backend for Salvia (Sal).
+// @termsOfService http://swagger.io/terms/
+//
+// @contact.name API Support
+// @contact.url http://www.swagger.io/support
+// @contact.email support@salvia.com
+//
+// @license.name MIT
+// @license.url https://opensource.org/licenses/MIT
+//
+// @host localhost:8000
+// @BasePath /api/v1
 package main
 
 import (

@@ -11,9 +11,11 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
+	_ "github.com/off-by-2/sal/docs" // Swagger docs
 	"github.com/off-by-2/sal/internal/config"
 	"github.com/off-by-2/sal/internal/database"
 	"github.com/off-by-2/sal/internal/response"
+	httpSwagger "github.com/swaggo/http-swagger"
 )
 
 // Server is the main HTTP server container.
@@ -82,6 +84,11 @@ func (s *Server) routes() {
 			response.JSON(w, http.StatusOK, map[string]string{"message": "Welcome to Sal API v1"})
 		})
 	})
+
+	// Swagger UI
+	s.Router.Get("/swagger/*", httpSwagger.Handler(
+		httpSwagger.URL("http://localhost:8000/swagger/doc.json"), //The url pointing to API definition
+	))
 }
 
 // handleHealthCheck returns a handler that checks DB connectivity.
