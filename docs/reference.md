@@ -27,7 +27,7 @@ Package main serves as the entry point for the Sal API server. It handles depend
 
 
 <a name="Server"></a>
-## type [Server](<https://github-personal/off-by-2/sal/blob/main/cmd/api/server.go#L24-L29>)
+## type [Server](<https://github-personal/off-by-2/sal/blob/main/cmd/api/server.go#L26-L31>)
 
 Server is the main HTTP server container. It holds references to all shared dependencies required by HTTP handlers.
 
@@ -41,7 +41,7 @@ type Server struct {
 ```
 
 <a name="NewServer"></a>
-### func [NewServer](<https://github-personal/off-by-2/sal/blob/main/cmd/api/server.go#L32>)
+### func [NewServer](<https://github-personal/off-by-2/sal/blob/main/cmd/api/server.go#L34>)
 
 ```go
 func NewServer(cfg *config.Config, db *database.Postgres) *Server
@@ -50,7 +50,7 @@ func NewServer(cfg *config.Config, db *database.Postgres) *Server
 NewServer creates and configures a new HTTP server.
 
 <a name="Server.Shutdown"></a>
-### func \(\*Server\) [Shutdown](<https://github-personal/off-by-2/sal/blob/main/cmd/api/server.go#L59>)
+### func \(\*Server\) [Shutdown](<https://github-personal/off-by-2/sal/blob/main/cmd/api/server.go#L61>)
 
 ```go
 func (s *Server) Shutdown(ctx context.Context) error
@@ -59,7 +59,7 @@ func (s *Server) Shutdown(ctx context.Context) error
 Shutdown gracefully stops the HTTP server.
 
 <a name="Server.Start"></a>
-### func \(\*Server\) [Start](<https://github-personal/off-by-2/sal/blob/main/cmd/api/server.go#L45>)
+### func \(\*Server\) [Start](<https://github-personal/off-by-2/sal/blob/main/cmd/api/server.go#L47>)
 
 ```go
 func (s *Server) Start() error
@@ -111,6 +111,98 @@ var SwaggerInfo = &swag.Spec{
 }
 ```
 
+# auth
+
+```go
+import "github.com/off-by-2/sal/internal/auth"
+```
+
+Package auth provides authentication primitives.
+
+## Index
+
+- [Constants](<#constants>)
+- [func CheckPasswordHash\(password, hash string\) error](<#CheckPasswordHash>)
+- [func HashPassword\(password string\) \(string, error\)](<#HashPassword>)
+- [func NewAccessToken\(userID, orgID, role, secret string\) \(string, error\)](<#NewAccessToken>)
+- [func NewRefreshToken\(\) \(string, error\)](<#NewRefreshToken>)
+- [type Claims](<#Claims>)
+  - [func ParseAccessToken\(tokenString, secret string\) \(\*Claims, error\)](<#ParseAccessToken>)
+
+
+## Constants
+
+<a name="AccessTokenDuration"></a>AccessTokenDuration is the lifespan of an access token \(15 minutes\).
+
+```go
+const AccessTokenDuration = 15 * time.Minute
+```
+
+<a name="RefreshTokenLen"></a>RefreshTokenLen is the byte length of the refresh token \(32 bytes = 64 hex chars\).
+
+```go
+const RefreshTokenLen = 32
+```
+
+<a name="CheckPasswordHash"></a>
+## func [CheckPasswordHash](<https://github-personal/off-by-2/sal/blob/main/internal/auth/password.go#L21>)
+
+```go
+func CheckPasswordHash(password, hash string) error
+```
+
+CheckPasswordHash compares a bcrypt hashed password with a plain text password. Returns nil if the passwords match, or an error if they don't.
+
+<a name="HashPassword"></a>
+## func [HashPassword](<https://github-personal/off-by-2/sal/blob/main/internal/auth/password.go#L11>)
+
+```go
+func HashPassword(password string) (string, error)
+```
+
+HashPassword hashes a plain text password using bcrypt with a default cost.
+
+<a name="NewAccessToken"></a>
+## func [NewAccessToken](<https://github-personal/off-by-2/sal/blob/main/internal/auth/token.go#L28>)
+
+```go
+func NewAccessToken(userID, orgID, role, secret string) (string, error)
+```
+
+NewAccessToken creates a signed JWT for the given user context.
+
+<a name="NewRefreshToken"></a>
+## func [NewRefreshToken](<https://github-personal/off-by-2/sal/blob/main/internal/auth/token.go#L46>)
+
+```go
+func NewRefreshToken() (string, error)
+```
+
+NewRefreshToken generates a secure random hex string. This matches the format expected by the 'refresh\_tokens' table.
+
+<a name="Claims"></a>
+## type [Claims](<https://github-personal/off-by-2/sal/blob/main/internal/auth/token.go#L20-L25>)
+
+Claims represents the JWT payload.
+
+```go
+type Claims struct {
+    UserID string `json:"sub"`
+    OrgID  string `json:"org_id,omitempty"`
+    Role   string `json:"role,omitempty"`
+    jwt.RegisteredClaims
+}
+```
+
+<a name="ParseAccessToken"></a>
+### func [ParseAccessToken](<https://github-personal/off-by-2/sal/blob/main/internal/auth/token.go#L55>)
+
+```go
+func ParseAccessToken(tokenString, secret string) (*Claims, error)
+```
+
+ParseAccessToken validates the token string and returns the claims.
+
 # config
 
 ```go
@@ -126,7 +218,7 @@ Package config handles environment variable loading and application configuratio
 
 
 <a name="Config"></a>
-## type [Config](<https://github-personal/off-by-2/sal/blob/main/internal/config/config.go#L12-L16>)
+## type [Config](<https://github-personal/off-by-2/sal/blob/main/internal/config/config.go#L12-L17>)
 
 Config holds all configuration values for the application.
 
@@ -135,11 +227,12 @@ type Config struct {
     DatabaseURL string
     Port        string
     Env         string
+    JWTSecret   string
 }
 ```
 
 <a name="Load"></a>
-### func [Load](<https://github-personal/off-by-2/sal/blob/main/internal/config/config.go#L21>)
+### func [Load](<https://github-personal/off-by-2/sal/blob/main/internal/config/config.go#L22>)
 
 ```go
 func Load() *Config
@@ -200,6 +293,286 @@ func (p *Postgres) Health(ctx context.Context) error
 ```
 
 Health checks the status of the database connection. It returns nil if the database is reachable, or an error if it is not.
+
+# handler
+
+```go
+import "github.com/off-by-2/sal/internal/handler"
+```
+
+Package handler provides HTTP handlers for the API.
+
+## Index
+
+- [type AuthHandler](<#AuthHandler>)
+  - [func NewAuthHandler\(db \*database.Postgres, userEq \*repository.UserRepository, orgEq \*repository.OrganizationRepository, staffEq \*repository.StaffRepository, jwtSecret string\) \*AuthHandler](<#NewAuthHandler>)
+  - [func \(h \*AuthHandler\) Login\(w http.ResponseWriter, r \*http.Request\)](<#AuthHandler.Login>)
+  - [func \(h \*AuthHandler\) Register\(w http.ResponseWriter, r \*http.Request\)](<#AuthHandler.Register>)
+- [type LoginInput](<#LoginInput>)
+- [type RegisterInput](<#RegisterInput>)
+
+
+<a name="AuthHandler"></a>
+## type [AuthHandler](<https://github-personal/off-by-2/sal/blob/main/internal/handler/auth.go#L19-L26>)
+
+AuthHandler handles authentication requests.
+
+```go
+type AuthHandler struct {
+    DB        *database.Postgres
+    UserRepo  *repository.UserRepository
+    OrgRepo   *repository.OrganizationRepository
+    StaffRepo *repository.StaffRepository
+    JWTSecret string
+    Validator *validator.Validate
+}
+```
+
+<a name="NewAuthHandler"></a>
+### func [NewAuthHandler](<https://github-personal/off-by-2/sal/blob/main/internal/handler/auth.go#L29-L35>)
+
+```go
+func NewAuthHandler(db *database.Postgres, userEq *repository.UserRepository, orgEq *repository.OrganizationRepository, staffEq *repository.StaffRepository, jwtSecret string) *AuthHandler
+```
+
+NewAuthHandler creates a new AuthHandler.
+
+<a name="AuthHandler.Login"></a>
+### func \(\*AuthHandler\) [Login](<https://github-personal/off-by-2/sal/blob/main/internal/handler/auth.go#L163>)
+
+```go
+func (h *AuthHandler) Login(w http.ResponseWriter, r *http.Request)
+```
+
+Login authenticates a user and returns tokens. @Summary Login @Description Authenticates user by email/password and returns JWT pairs. @Tags auth @Accept json @Produce json @Param input body LoginInput true "Login Credentials" @Success 200 \{object\} response.Response\{data=map\[string\]string\} "Tokens" @Failure 401 \{object\} response.Response "Unauthorized" @Router /auth/login \[post\]
+
+<a name="AuthHandler.Register"></a>
+### func \(\*AuthHandler\) [Register](<https://github-personal/off-by-2/sal/blob/main/internal/handler/auth.go#L72>)
+
+```go
+func (h *AuthHandler) Register(w http.ResponseWriter, r *http.Request)
+```
+
+Register creates a new user, organization, and admin staff entry atomically. @Summary Register a new Admin @Description Creates a new User, Organization, and links them as Admin Staff. @Tags auth @Accept json @Produce json @Param input body RegisterInput true "Registration Config" @Success 201 \{object\} response.Response\{data=map\[string\]interface\{\}\} "User and Org created" @Failure 400 \{object\} response.Response "Validation Error" @Failure 500 \{object\} response.Response "Internal Server Error" @Router /auth/register \[post\]
+
+<a name="LoginInput"></a>
+## type [LoginInput](<https://github-personal/off-by-2/sal/blob/main/internal/handler/auth.go#L56-L59>)
+
+LoginInput defines the payload for login.
+
+```go
+type LoginInput struct {
+    Email    string `json:"email" validate:"required,email"`
+    Password string `json:"password" validate:"required"`
+}
+```
+
+<a name="RegisterInput"></a>
+## type [RegisterInput](<https://github-personal/off-by-2/sal/blob/main/internal/handler/auth.go#L47-L53>)
+
+RegisterInput defines the payload for admin registration.
+
+```go
+type RegisterInput struct {
+    Email     string `json:"email" validate:"required,email"`
+    Password  string `json:"password" validate:"required,min=8"`
+    FirstName string `json:"first_name" validate:"required"`
+    LastName  string `json:"last_name" validate:"required"`
+    OrgName   string `json:"org_name" validate:"required"`
+}
+```
+
+# repository
+
+```go
+import "github.com/off-by-2/sal/internal/repository"
+```
+
+Package repository implements data access for the Salvia application.
+
+Package repository implements data access for the Salvia application.
+
+## Index
+
+- [Variables](<#variables>)
+- [type Organization](<#Organization>)
+- [type OrganizationRepository](<#OrganizationRepository>)
+  - [func NewOrganizationRepository\(db \*database.Postgres\) \*OrganizationRepository](<#NewOrganizationRepository>)
+  - [func \(r \*OrganizationRepository\) CreateOrg\(ctx context.Context, o \*Organization\) error](<#OrganizationRepository.CreateOrg>)
+- [type Staff](<#Staff>)
+- [type StaffRepository](<#StaffRepository>)
+  - [func NewStaffRepository\(db \*database.Postgres\) \*StaffRepository](<#NewStaffRepository>)
+  - [func \(r \*StaffRepository\) CreateStaff\(ctx context.Context, s \*Staff\) error](<#StaffRepository.CreateStaff>)
+- [type User](<#User>)
+- [type UserRepository](<#UserRepository>)
+  - [func NewUserRepository\(db \*database.Postgres\) \*UserRepository](<#NewUserRepository>)
+  - [func \(r \*UserRepository\) CreateUser\(ctx context.Context, u \*User\) error](<#UserRepository.CreateUser>)
+  - [func \(r \*UserRepository\) GetUserByEmail\(ctx context.Context, email string\) \(\*User, error\)](<#UserRepository.GetUserByEmail>)
+
+
+## Variables
+
+<a name="ErrUserNotFound"></a>
+
+```go
+var (
+    // ErrUserNotFound is returned when a user cannot be found in the database.
+    ErrUserNotFound = errors.New("user not found")
+    // ErrDuplicateEmail is returned when an email is already taken.
+    ErrDuplicateEmail = errors.New("email already exists")
+)
+```
+
+<a name="Organization"></a>
+## type [Organization](<https://github-personal/off-by-2/sal/blob/main/internal/repository/orgs.go#L13-L20>)
+
+Organization represents a row in the organizations table.
+
+```go
+type Organization struct {
+    ID        string    `json:"id"`
+    Name      string    `json:"name"`
+    Slug      string    `json:"slug"`
+    OwnerID   string    `json:"owner_id"`
+    CreatedAt time.Time `json:"created_at"`
+    UpdatedAt time.Time `json:"updated_at"`
+}
+```
+
+<a name="OrganizationRepository"></a>
+## type [OrganizationRepository](<https://github-personal/off-by-2/sal/blob/main/internal/repository/orgs.go#L23-L25>)
+
+OrganizationRepository handles database operations for organizations.
+
+```go
+type OrganizationRepository struct {
+    // contains filtered or unexported fields
+}
+```
+
+<a name="NewOrganizationRepository"></a>
+### func [NewOrganizationRepository](<https://github-personal/off-by-2/sal/blob/main/internal/repository/orgs.go#L28>)
+
+```go
+func NewOrganizationRepository(db *database.Postgres) *OrganizationRepository
+```
+
+NewOrganizationRepository creates a new OrganizationRepository.
+
+<a name="OrganizationRepository.CreateOrg"></a>
+### func \(\*OrganizationRepository\) [CreateOrg](<https://github-personal/off-by-2/sal/blob/main/internal/repository/orgs.go#L33>)
+
+```go
+func (r *OrganizationRepository) CreateOrg(ctx context.Context, o *Organization) error
+```
+
+CreateOrg inserts a new organization.
+
+<a name="Staff"></a>
+## type [Staff](<https://github-personal/off-by-2/sal/blob/main/internal/repository/staff.go#L12-L20>)
+
+Staff represents a row in the staff table.
+
+```go
+type Staff struct {
+    ID             string                 `json:"id"`
+    OrganizationID string                 `json:"organization_id"`
+    UserID         string                 `json:"user_id"`
+    Role           string                 `json:"role"`        // 'admin' or 'staff'
+    Permissions    map[string]interface{} `json:"permissions"` // JSONB
+    CreatedAt      time.Time              `json:"created_at"`
+    UpdatedAt      time.Time              `json:"updated_at"`
+}
+```
+
+<a name="StaffRepository"></a>
+## type [StaffRepository](<https://github-personal/off-by-2/sal/blob/main/internal/repository/staff.go#L23-L25>)
+
+StaffRepository handles database operations for staff.
+
+```go
+type StaffRepository struct {
+    // contains filtered or unexported fields
+}
+```
+
+<a name="NewStaffRepository"></a>
+### func [NewStaffRepository](<https://github-personal/off-by-2/sal/blob/main/internal/repository/staff.go#L28>)
+
+```go
+func NewStaffRepository(db *database.Postgres) *StaffRepository
+```
+
+NewStaffRepository creates a new StaffRepository.
+
+<a name="StaffRepository.CreateStaff"></a>
+### func \(\*StaffRepository\) [CreateStaff](<https://github-personal/off-by-2/sal/blob/main/internal/repository/staff.go#L33>)
+
+```go
+func (r *StaffRepository) CreateStaff(ctx context.Context, s *Staff) error
+```
+
+CreateStaff inserts a new staff member.
+
+<a name="User"></a>
+## type [User](<https://github-personal/off-by-2/sal/blob/main/internal/repository/users.go#L23-L36>)
+
+User represents a row in the users table.
+
+```go
+type User struct {
+    ID              string    `json:"id"`
+    Email           string    `json:"email"`
+    EmailVerified   bool      `json:"email_verified"`
+    PasswordHash    string    `json:"-"` // Never return password hash in JSON
+    AuthProvider    string    `json:"auth_provider"`
+    FirstName       string    `json:"first_name"`
+    LastName        string    `json:"last_name"`
+    Phone           *string   `json:"phone,omitempty"`
+    ProfileImageURL *string   `json:"profile_image_url,omitempty"`
+    IsActive        bool      `json:"is_active"`
+    CreatedAt       time.Time `json:"created_at"`
+    UpdatedAt       time.Time `json:"updated_at"`
+}
+```
+
+<a name="UserRepository"></a>
+## type [UserRepository](<https://github-personal/off-by-2/sal/blob/main/internal/repository/users.go#L39-L41>)
+
+UserRepository handles database operations for users.
+
+```go
+type UserRepository struct {
+    // contains filtered or unexported fields
+}
+```
+
+<a name="NewUserRepository"></a>
+### func [NewUserRepository](<https://github-personal/off-by-2/sal/blob/main/internal/repository/users.go#L44>)
+
+```go
+func NewUserRepository(db *database.Postgres) *UserRepository
+```
+
+NewUserRepository creates a new UserRepository.
+
+<a name="UserRepository.CreateUser"></a>
+### func \(\*UserRepository\) [CreateUser](<https://github-personal/off-by-2/sal/blob/main/internal/repository/users.go#L49>)
+
+```go
+func (r *UserRepository) CreateUser(ctx context.Context, u *User) error
+```
+
+CreateUser inserts a new user into the database.
+
+<a name="UserRepository.GetUserByEmail"></a>
+### func \(\*UserRepository\) [GetUserByEmail](<https://github-personal/off-by-2/sal/blob/main/internal/repository/users.go#L74>)
+
+```go
+func (r *UserRepository) GetUserByEmail(ctx context.Context, email string) (*User, error)
+```
+
+GetUserByEmail retrieves a user by their email address.
 
 # response
 
