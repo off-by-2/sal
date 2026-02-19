@@ -16,29 +16,29 @@ Each phase builds upon the last, delivering a testable increment.
 
 ---
 
-## 🚧 Phase 3: Authentication (Native Go Auth)
+## ✅ Phase 3: Authentication (Native Go Auth)
 
-Replace Supabase Auth. Estimated: **2-3 Days**.
+Replcaed Supabase Auth. Complete.
 
 ### 3a. Core Crypto Logic
-- [ ] **Dependencies**: Install `bcrypt` + `jwt/v5`.
-- [ ] **Password Helper**: `internal/auth/password.go` (`Hash`, `Compare`).
-- [ ] **Token Helper**: `internal/auth/token.go` (`NewAccess`, `NewRefresh`, `Parse`).
+- [x] **Dependencies**: Install `bcrypt` + `jwt/v5`.
+- [x] **Password Helper**: `internal/auth/password.go` (`Hash`, `Compare`).
+- [x] **Token Helper**: `internal/auth/token.go` (`NewAccess`, `NewRefresh`, `Parse`).
 
 ### 3b. Data Access (Repositories)
-- [ ] **User Queries**: `CreateUser`, `GetUserByEmail`.
-- [ ] **Org Queries**: `CreateOrganization`.
-- [ ] **Staff Queries**: `CreateStaff`, `GetStaffByUserID`.
+- [x] **User Queries**: `CreateUser`, `GetUserByEmail`.
+- [x] **Org Queries**: `CreateOrganization`.
+- [x] **Staff Queries**: `CreateStaff`, `GetStaffByUserID`.
 
 ### 3c. HTTP Handlers
-- [ ] **Register Endpoint**: `POST /auth/register`.
+- [x] **Register Endpoint**: `POST /auth/register`.
       - Transaction: Create User -> Org -> Staff (Admin).
       - Return: Access + Refresh Tokens.
-- [ ] **Login Endpoint**: `POST /auth/login`.
+- [x] **Login Endpoint**: `POST /auth/login`.
       - Check Password -> Issue Tokens.
 
 ### 3d. Middleware
-- [ ] **Auth Middleware**: Check `Authorization: Bearer ...`.
+- [x] **Auth Middleware**: Check `Authorization: Bearer ...`.
 - [ ] **Permission Middleware**: Check `staff.permissions` JSON.
 
 ---

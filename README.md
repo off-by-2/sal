@@ -46,6 +46,24 @@ make run
 make test
 ```
 
+## 🚀 Before Opening a PR
+
+Ensure your code is clean and tested:
+
+```bash
+# 1. Format and Lint
+make lint
+
+# 2. Run Tests
+make test
+
+# 3. Update Documentation (Swagger)
+make swagger
+
+# 4. Verify Build
+make build
+```
+
 ## Development Commands
 
 We use `make` for common tasks:

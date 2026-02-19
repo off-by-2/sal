@@ -1,4 +1,47 @@
 basePath: /api/v1
+definitions:
+  handler.LoginInput:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  handler.RegisterInput:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      org_name:
+        type: string
+      password:
+        minLength: 8
+        type: string
+    required:
+    - email
+    - first_name
+    - last_name
+    - org_name
+    - password
+    type: object
+  response.Response:
+    properties:
+      data:
+        description: Data holds the payload (can be struct, map, or nil)
+      error:
+        description: Error holds error details if Success is false
+      meta:
+        description: Meta holds pagination or other metadata
+      success:
+        description: Success indicates if the request was successful
+        type: boolean
+    type: object
 host: localhost:8000
 info:
   contact:
@@ -12,5 +55,74 @@ info:
   termsOfService: http://swagger.io/terms/
   title: Sal API
   version: "1.0"
-paths: {}
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticates user by email/password and returns JWT pairs.
+      parameters:
+      - description: Login Credentials
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/handler.LoginInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Tokens
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  additionalProperties:
+                    type: string
+                  type: object
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Login
+      tags:
+      - auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new User, Organization, and links them as Admin Staff.
+      parameters:
+      - description: Registration Config
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/handler.RegisterInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User and Org created
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  additionalProperties: true
+                  type: object
+              type: object
+        "400":
+          description: Validation Error
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Register a new Admin
+      tags:
+      - auth
 swagger: "2.0"
