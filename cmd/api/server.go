@@ -16,6 +16,8 @@ import (
 	_ "github.com/off-by-2/sal/docs" // Swagger docs
 	"github.com/off-by-2/sal/internal/config"
 	"github.com/off-by-2/sal/internal/database"
+	"github.com/off-by-2/sal/internal/handler"
+	"github.com/off-by-2/sal/internal/repository"
 	"github.com/off-by-2/sal/internal/response"
 )
 
@@ -79,17 +81,35 @@ func (s *Server) routes() {
 	// Health Check
 	s.Router.Get("/health", s.handleHealthCheck())
 
+	// Repositories
+	userRepo := repository.NewUserRepository(s.DB)
+	orgRepo := repository.NewOrganizationRepository(s.DB)
+	staffRepo := repository.NewStaffRepository(s.DB)
+
+	// Handlers
+	authHandler := handler.NewAuthHandler(s.DB, userRepo, orgRepo, staffRepo, s.Config.JWTSecret)
+
 	// API Group
 	s.Router.Route("/api/v1", func(r chi.Router) {
 		r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 			response.JSON(w, http.StatusOK, map[string]string{"message": "Welcome to Sal API v1"})
 		})
+
+		// Auth Config
+		r.Mount("/auth", authRouter(authHandler))
 	})
 
 	// Swagger UI
 	s.Router.Get("/swagger/*", httpSwagger.Handler(
 		httpSwagger.URL("http://localhost:8000/swagger/doc.json"), //The url pointing to API definition
 	))
+}
+
+func authRouter(h *handler.AuthHandler) http.Handler {
+	r := chi.NewRouter()
+	r.Post("/register", h.Register)
+	r.Post("/login", h.Login)
+	return r
 }
 
 // handleHealthCheck returns a handler that checks DB connectivity.
