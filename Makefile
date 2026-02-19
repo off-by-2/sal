@@ -70,7 +70,7 @@ docs-serve: ## Serve documentation locally (pkgsite)
 	$(shell go env GOPATH)/bin/pkgsite -http=:6060
 
 docs-generate: ## Generate API Reference markdown (requires gomarkdoc)
-	$(shell go env GOPATH)/bin/gomarkdoc --output docs/reference.md ./...
+	$(shell go env GOPATH)/bin/gomarkdoc --output docs/reference.md $(shell go list ./...)
 
 swagger: ## Generate Swagger docs
 	$(shell go env GOPATH)/bin/swag init -g cmd/api/main.go --output docs
