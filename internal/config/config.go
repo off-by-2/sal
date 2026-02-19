@@ -13,6 +13,7 @@ type Config struct {
 	DatabaseURL string
 	Port        string
 	Env         string
+	JWTSecret   string
 }
 
 // Load retrieves configuration from environment variables.
@@ -28,6 +29,7 @@ func Load() *Config {
 		DatabaseURL: getEnv("DATABASE_URL", "postgres://salvia:localdev@localhost:5432/salvia?sslmode=disable"),
 		Port:        getEnv("PORT", "8000"),
 		Env:         getEnv("ENV", "development"),
+		JWTSecret:   getEnv("JWT_SECRET", "super-secret-dev-key-change-me"),
 	}
 }
 
