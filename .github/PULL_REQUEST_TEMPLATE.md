@@ -20,6 +20,13 @@ Please describe the tests that you ran to verify your changes. Provide instructi
 - [ ] Test A
 - [ ] Test B
 
+# Performance (Optional)
+
+If your change affects performance, please include benchmark results here:
+```
+http_req_duration.......: avg=1.23ms min=1.01ms med=1.15ms max=5.43ms p(90)=1.34ms p(95)=1.45ms
+```
+
 # Checklist:
 
 - [ ] My code follows the style guidelines of this project

@@ -168,6 +168,37 @@ func (s *Server) routes() {
 
 ---
 
+## 🚀 Performance Testing
+
+You can measure the performance of your endpoints using `make benchmark`.
+
+### Usage
+```bash
+# Test a specific endpoint
+make benchmark ENDPOINT=/api/v1/health
+
+# Test Authentication Flow (Register -> Login) with high load
+make benchmark-auth
+```
+
+### Understanding Results
+The output will show:
+-   **http_req_duration**: Total time for the request. Look at `p(95)` (95th percentile).
+-   **http_req_failed**: Should be 0%.
+
+Please include these stats in your PR for performance-critical changes.
+
+### Do I need to write a script for every endpoint?
+**No!** You don't need to write a custom k6 script for every single endpoint.
+
+1.  **For simple GET requests:** Just use the generic command:
+    ```bash
+    make benchmark ENDPOINT=/api/v1/beneficiaries
+    ```
+2.  **For complex flows (POST/PUT):** You only need to write a custom script (like `scripts/k6-auth.js`) for **critical paths** like Login, Registration, or Checkout. You can copy an existing script and just change the payload.
+
+---
+
 ## 📏 Coding Standards
 
 ### Configuration
