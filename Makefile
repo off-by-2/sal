@@ -74,3 +74,21 @@ docs-generate: ## Generate API Reference markdown (requires gomarkdoc)
 
 swagger: ## Generate Swagger docs
 	$(shell go env GOPATH)/bin/swag init -g cmd/api/main.go --output docs
+
+# performance
+benchmark: ## Run load test on an endpoint (Usage: make benchmark ENDPOINT=/health)
+	@if [ -z "$(ENDPOINT)" ]; then echo "Error: ENDPOINT is not set. Usage: make benchmark ENDPOINT=/health"; exit 1; fi
+	@echo "Running benchmark on http://host.docker.internal:8000$(ENDPOINT)..."
+	@docker run --rm -i \
+		-e ENDPOINT=$(ENDPOINT) \
+		-v $(PWD)/scripts/k6.js:/k6.js \
+		--add-host=host.docker.internal:host-gateway \
+		grafana/k6 run /k6.js
+
+benchmark-auth: ## Run auth load test (Usage: make benchmark-auth)
+	@echo "Running auth benchmark..."
+	@docker run --rm -i \
+		-v $(PWD)/scripts/k6-auth.js:/auth.js \
+		--add-host=host.docker.internal:host-gateway \
+		grafana/k6 run /auth.js
+
