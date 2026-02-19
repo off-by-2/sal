@@ -1,0 +1,16 @@
+basePath: /api/v1
+host: localhost:8000
+info:
+  contact:
+    email: support@salvia.com
+    name: API Support
+    url: http://www.swagger.io/support
+  description: The high-performance backend for Salvia (Sal).
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: http://swagger.io/terms/
+  title: Sal API
+  version: "1.0"
+paths: {}
+swagger: "2.0"
