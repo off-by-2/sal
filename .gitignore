@@ -11,3 +11,9 @@
 
 # OS
 .DS_Store
+
+coverage.out
+
+/bin
+
+*.log
