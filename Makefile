@@ -1,13 +1,10 @@
-# Environment variables
-include .env
-export
-
 # Helpers
 GO_CMD=go
 GO_RUN=$(GO_CMD) run
 GO_TEST=$(GO_CMD) test
 GO_BUILD=$(GO_CMD) build
 MIGRATE_CMD=$(GO_RUN) ./cmd/migrate/main.go
+API_CMD=$(GO_RUN) ./cmd/api
 
 # Database Connection (for psql)
 DB_DSN=$(DATABASE_URL)
@@ -29,7 +26,7 @@ build: ## Build the API binary
 
 run: ## Run the API locally
 	@echo "Starting API..."
-	$(GO_RUN) ./cmd/api
+	$(API_CMD)
 
 test: ## Run unit tests with coverage
 	@echo "Running tests..."
@@ -38,7 +35,11 @@ test: ## Run unit tests with coverage
 
 lint: ## Run golangci-lint
 	@echo "Running linter..."
-	golangci-lint run
+	$(shell go env GOPATH)/bin/golangci-lint run
+
+clean: ## Clean build artifacts
+	rm -rf bin/ docs/ docs.go
+
 
 # database
 migrate-up: ## Apply all pending migrations
@@ -66,7 +67,28 @@ docker-logs: ## View container logs
 # docs
 docs-serve: ## Serve documentation locally (pkgsite)
 	@echo "Opening http://localhost:6060/github.com/off-by-2/sal"
-	pkgsite -http=:6060
+	$(shell go env GOPATH)/bin/pkgsite -http=:6060
 
 docs-generate: ## Generate API Reference markdown (requires gomarkdoc)
-	gomarkdoc --output docs/reference.md ./...
+	$(shell go env GOPATH)/bin/gomarkdoc --output docs/reference.md $(shell go list ./...)
+
+swagger: ## Generate Swagger docs
+	$(shell go env GOPATH)/bin/swag init -g cmd/api/main.go --output docs
+
+# performance
+benchmark: ## Run load test on an endpoint (Usage: make benchmark ENDPOINT=/health)
+	@if [ -z "$(ENDPOINT)" ]; then echo "Error: ENDPOINT is not set. Usage: make benchmark ENDPOINT=/health"; exit 1; fi
+	@echo "Running benchmark on http://host.docker.internal:8000$(ENDPOINT)..."
+	@docker run --rm -i \
+		-e ENDPOINT=$(ENDPOINT) \
+		-v $(PWD)/scripts/k6.js:/k6.js \
+		--add-host=host.docker.internal:host-gateway \
+		grafana/k6 run /k6.js
+
+benchmark-auth: ## Run auth load test (Usage: make benchmark-auth)
+	@echo "Running auth benchmark..."
+	@docker run --rm -i \
+		-v $(PWD)/scripts/k6-auth.js:/auth.js \
+		--add-host=host.docker.internal:host-gateway \
+		grafana/k6 run /auth.js
+
