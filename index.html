@@ -19,7 +19,7 @@
       
       
       <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.2">
     
     
       
@@ -448,6 +448,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#before-opening-a-pr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚀 Before Opening a PR
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#development-commands" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -669,6 +680,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#before-opening-a-pr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚀 Before Opening a PR
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#development-commands" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -793,6 +815,20 @@
 <h3 id="5-verify">5. Verify</h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>make<span class="w"> </span><span class="nb">test</span>
 </code></pre></div>
+<h2 id="before-opening-a-pr">🚀 Before Opening a PR</h2>
+<p>Ensure your code is clean and tested:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># 1. Format and Lint</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>make<span class="w"> </span>lint
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1"># 2. Run Tests</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>make<span class="w"> </span><span class="nb">test</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="c1"># 3. Update Documentation (Swagger)</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>make<span class="w"> </span>swagger
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="c1"># 4. Verify Build</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>make<span class="w"> </span>build
+</code></pre></div>
 <h2 id="development-commands">Development Commands</h2>
 <p>We use <code>make</code> for common tasks:</p>
 <table>
@@ -867,29 +903,29 @@
 <h2 id="database">Database</h2>
 <p>The schema is managed by <a href="https://github.com/pressly/goose">goose</a> migrations in <code>migrations/</code>.</p>
 <p><strong>To reset the database</strong> (drops all data):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>down<span class="w"> </span>-v
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>postgres<span class="w"> </span>-d
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>go<span class="w"> </span>run<span class="w"> </span>./cmd/migrate<span class="w"> </span>-cmd<span class="o">=</span>up
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>down<span class="w"> </span>-v
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>postgres<span class="w"> </span>-d
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>go<span class="w"> </span>run<span class="w"> </span>./cmd/migrate<span class="w"> </span>-cmd<span class="o">=</span>up
 </code></pre></div>
 <h2 id="docker">Docker</h2>
 <p>Run the full stack (API + database):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up
 </code></pre></div>
 <p>Or just the database (recommended for development — run Go natively for faster iteration):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>postgres<span class="w"> </span>-d
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>go<span class="w"> </span>run<span class="w"> </span>./cmd/api
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>postgres<span class="w"> </span>-d
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>go<span class="w"> </span>run<span class="w"> </span>./cmd/api
 </code></pre></div>
 <h2 id="project-structure">Project Structure</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>sal/
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>├── cmd/api/            # Application entrypoint
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>├── internal/
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>│   ├── config/         # Environment config loading
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>│   ├── database/       # PostgreSQL connection (pgx)
-<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>│   └── response/       # Standardized JSON responses
-<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>├── migrations/         # Database schema (goose)
-<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>├── docker-compose.yml  # Local dev (Postgres + API)
-<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>├── Dockerfile          # Production build
-<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>└── .env.example        # Environment template
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>sal/
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>├── cmd/api/            # Application entrypoint
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>├── internal/
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>│   ├── config/         # Environment config loading
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>│   ├── database/       # PostgreSQL connection (pgx)
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>│   └── response/       # Standardized JSON responses
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>├── migrations/         # Database schema (goose)
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>├── docker-compose.yml  # Local dev (Postgres + API)
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>├── Dockerfile          # Production build
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>└── .env.example        # Environment template
 </code></pre></div>
 <h2 id="documentation">Documentation</h2>
 <ul>

@@ -2,10 +2,18 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://off-by-2.github.io/sal/</loc>
-         <lastmod>2026-02-18</lastmod>
+         <lastmod>2026-02-20</lastmod>
+    </url>
+    <url>
+         <loc>https://off-by-2.github.io/sal/ARCHITECTURE/</loc>
+         <lastmod>2026-02-20</lastmod>
+    </url>
+    <url>
+         <loc>https://off-by-2.github.io/sal/ROADMAP/</loc>
+         <lastmod>2026-02-20</lastmod>
     </url>
     <url>
          <loc>https://off-by-2.github.io/sal/reference/</loc>
-         <lastmod>2026-02-18</lastmod>
+         <lastmod>2026-02-20</lastmod>
     </url>
 </urlset>
