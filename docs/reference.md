@@ -27,7 +27,7 @@ Package main serves as the entry point for the Sal API server. It handles depend
 
 
 <a name="Server"></a>
-## type [Server](<https://github-personal/off-by-2/sal/blob/main/cmd/api/server.go#L26-L31>)
+## type [Server](<https://github.com-personal/off-by-2/sal/blob/main/cmd/api/server.go#L26-L31>)
 
 Server is the main HTTP server container. It holds references to all shared dependencies required by HTTP handlers.
 
@@ -41,7 +41,7 @@ type Server struct {
 ```
 
 <a name="NewServer"></a>
-### func [NewServer](<https://github-personal/off-by-2/sal/blob/main/cmd/api/server.go#L34>)
+### func [NewServer](<https://github.com-personal/off-by-2/sal/blob/main/cmd/api/server.go#L34>)
 
 ```go
 func NewServer(cfg *config.Config, db *database.Postgres) *Server
@@ -50,7 +50,7 @@ func NewServer(cfg *config.Config, db *database.Postgres) *Server
 NewServer creates and configures a new HTTP server.
 
 <a name="Server.Shutdown"></a>
-### func \(\*Server\) [Shutdown](<https://github-personal/off-by-2/sal/blob/main/cmd/api/server.go#L61>)
+### func \(\*Server\) [Shutdown](<https://github.com-personal/off-by-2/sal/blob/main/cmd/api/server.go#L61>)
 
 ```go
 func (s *Server) Shutdown(ctx context.Context) error
@@ -59,7 +59,7 @@ func (s *Server) Shutdown(ctx context.Context) error
 Shutdown gracefully stops the HTTP server.
 
 <a name="Server.Start"></a>
-### func \(\*Server\) [Start](<https://github-personal/off-by-2/sal/blob/main/cmd/api/server.go#L47>)
+### func \(\*Server\) [Start](<https://github.com-personal/off-by-2/sal/blob/main/cmd/api/server.go#L47>)
 
 ```go
 func (s *Server) Start() error
@@ -145,7 +145,7 @@ const RefreshTokenLen = 32
 ```
 
 <a name="CheckPasswordHash"></a>
-## func [CheckPasswordHash](<https://github-personal/off-by-2/sal/blob/main/internal/auth/password.go#L21>)
+## func [CheckPasswordHash](<https://github.com-personal/off-by-2/sal/blob/main/internal/auth/password.go#L21>)
 
 ```go
 func CheckPasswordHash(password, hash string) error
@@ -154,7 +154,7 @@ func CheckPasswordHash(password, hash string) error
 CheckPasswordHash compares a bcrypt hashed password with a plain text password. Returns nil if the passwords match, or an error if they don't.
 
 <a name="HashPassword"></a>
-## func [HashPassword](<https://github-personal/off-by-2/sal/blob/main/internal/auth/password.go#L11>)
+## func [HashPassword](<https://github.com-personal/off-by-2/sal/blob/main/internal/auth/password.go#L11>)
 
 ```go
 func HashPassword(password string) (string, error)
@@ -163,7 +163,7 @@ func HashPassword(password string) (string, error)
 HashPassword hashes a plain text password using bcrypt with a default cost.
 
 <a name="NewAccessToken"></a>
-## func [NewAccessToken](<https://github-personal/off-by-2/sal/blob/main/internal/auth/token.go#L28>)
+## func [NewAccessToken](<https://github.com-personal/off-by-2/sal/blob/main/internal/auth/token.go#L28>)
 
 ```go
 func NewAccessToken(userID, orgID, role, secret string) (string, error)
@@ -172,7 +172,7 @@ func NewAccessToken(userID, orgID, role, secret string) (string, error)
 NewAccessToken creates a signed JWT for the given user context.
 
 <a name="NewRefreshToken"></a>
-## func [NewRefreshToken](<https://github-personal/off-by-2/sal/blob/main/internal/auth/token.go#L46>)
+## func [NewRefreshToken](<https://github.com-personal/off-by-2/sal/blob/main/internal/auth/token.go#L46>)
 
 ```go
 func NewRefreshToken() (string, error)
@@ -181,7 +181,7 @@ func NewRefreshToken() (string, error)
 NewRefreshToken generates a secure random hex string. This matches the format expected by the 'refresh\_tokens' table.
 
 <a name="Claims"></a>
-## type [Claims](<https://github-personal/off-by-2/sal/blob/main/internal/auth/token.go#L20-L25>)
+## type [Claims](<https://github.com-personal/off-by-2/sal/blob/main/internal/auth/token.go#L20-L25>)
 
 Claims represents the JWT payload.
 
@@ -195,7 +195,7 @@ type Claims struct {
 ```
 
 <a name="ParseAccessToken"></a>
-### func [ParseAccessToken](<https://github-personal/off-by-2/sal/blob/main/internal/auth/token.go#L55>)
+### func [ParseAccessToken](<https://github.com-personal/off-by-2/sal/blob/main/internal/auth/token.go#L55>)
 
 ```go
 func ParseAccessToken(tokenString, secret string) (*Claims, error)
@@ -218,21 +218,22 @@ Package config handles environment variable loading and application configuratio
 
 
 <a name="Config"></a>
-## type [Config](<https://github-personal/off-by-2/sal/blob/main/internal/config/config.go#L12-L17>)
+## type [Config](<https://github.com-personal/off-by-2/sal/blob/main/internal/config/config.go#L13-L19>)
 
 Config holds all configuration values for the application.
 
 ```go
 type Config struct {
-    DatabaseURL string
-    Port        string
-    Env         string
-    JWTSecret   string
+    DatabaseURL    string
+    Port           string
+    Env            string
+    JWTSecret      string
+    AllowedOrigins []string
 }
 ```
 
 <a name="Load"></a>
-### func [Load](<https://github-personal/off-by-2/sal/blob/main/internal/config/config.go#L22>)
+### func [Load](<https://github.com-personal/off-by-2/sal/blob/main/internal/config/config.go#L24>)
 
 ```go
 func Load() *Config
@@ -257,7 +258,7 @@ Package database manages the PostgreSQL connection pool and related utilities.
 
 
 <a name="Postgres"></a>
-## type [Postgres](<https://github-personal/off-by-2/sal/blob/main/internal/database/postgres.go#L13-L15>)
+## type [Postgres](<https://github.com-personal/off-by-2/sal/blob/main/internal/database/postgres.go#L13-L15>)
 
 Postgres holds the connection pool to the database.
 
@@ -268,7 +269,7 @@ type Postgres struct {
 ```
 
 <a name="New"></a>
-### func [New](<https://github-personal/off-by-2/sal/blob/main/internal/database/postgres.go#L19>)
+### func [New](<https://github.com-personal/off-by-2/sal/blob/main/internal/database/postgres.go#L19>)
 
 ```go
 func New(ctx context.Context, connectionString string) (*Postgres, error)
@@ -277,7 +278,7 @@ func New(ctx context.Context, connectionString string) (*Postgres, error)
 New creates a new Postgres connection pool with optimized production settings. It parses the connection string, sets connection limits, and verifies the connection with a Ping.
 
 <a name="Postgres.Close"></a>
-### func \(\*Postgres\) [Close](<https://github-personal/off-by-2/sal/blob/main/internal/database/postgres.go#L48>)
+### func \(\*Postgres\) [Close](<https://github.com-personal/off-by-2/sal/blob/main/internal/database/postgres.go#L48>)
 
 ```go
 func (p *Postgres) Close()
@@ -286,7 +287,7 @@ func (p *Postgres) Close()
 Close ensures the database connection pool allows graceful shutdown. It waits for active queries to finish before closing connections.
 
 <a name="Postgres.Health"></a>
-### func \(\*Postgres\) [Health](<https://github-personal/off-by-2/sal/blob/main/internal/database/postgres.go#L56>)
+### func \(\*Postgres\) [Health](<https://github.com-personal/off-by-2/sal/blob/main/internal/database/postgres.go#L56>)
 
 ```go
 func (p *Postgres) Health(ctx context.Context) error
@@ -313,7 +314,7 @@ Package handler provides HTTP handlers for the API.
 
 
 <a name="AuthHandler"></a>
-## type [AuthHandler](<https://github-personal/off-by-2/sal/blob/main/internal/handler/auth.go#L19-L26>)
+## type [AuthHandler](<https://github.com-personal/off-by-2/sal/blob/main/internal/handler/auth.go#L19-L26>)
 
 AuthHandler handles authentication requests.
 
@@ -329,7 +330,7 @@ type AuthHandler struct {
 ```
 
 <a name="NewAuthHandler"></a>
-### func [NewAuthHandler](<https://github-personal/off-by-2/sal/blob/main/internal/handler/auth.go#L29-L35>)
+### func [NewAuthHandler](<https://github.com-personal/off-by-2/sal/blob/main/internal/handler/auth.go#L29-L35>)
 
 ```go
 func NewAuthHandler(db *database.Postgres, userEq *repository.UserRepository, orgEq *repository.OrganizationRepository, staffEq *repository.StaffRepository, jwtSecret string) *AuthHandler
@@ -338,7 +339,7 @@ func NewAuthHandler(db *database.Postgres, userEq *repository.UserRepository, or
 NewAuthHandler creates a new AuthHandler.
 
 <a name="AuthHandler.Login"></a>
-### func \(\*AuthHandler\) [Login](<https://github-personal/off-by-2/sal/blob/main/internal/handler/auth.go#L163>)
+### func \(\*AuthHandler\) [Login](<https://github.com-personal/off-by-2/sal/blob/main/internal/handler/auth.go#L163>)
 
 ```go
 func (h *AuthHandler) Login(w http.ResponseWriter, r *http.Request)
@@ -347,7 +348,7 @@ func (h *AuthHandler) Login(w http.ResponseWriter, r *http.Request)
 Login authenticates a user and returns tokens. @Summary Login @Description Authenticates user by email/password and returns JWT pairs. @Tags auth @Accept json @Produce json @Param input body LoginInput true "Login Credentials" @Success 200 \{object\} response.Response\{data=map\[string\]string\} "Tokens" @Failure 401 \{object\} response.Response "Unauthorized" @Router /auth/login \[post\]
 
 <a name="AuthHandler.Register"></a>
-### func \(\*AuthHandler\) [Register](<https://github-personal/off-by-2/sal/blob/main/internal/handler/auth.go#L72>)
+### func \(\*AuthHandler\) [Register](<https://github.com-personal/off-by-2/sal/blob/main/internal/handler/auth.go#L72>)
 
 ```go
 func (h *AuthHandler) Register(w http.ResponseWriter, r *http.Request)
@@ -356,7 +357,7 @@ func (h *AuthHandler) Register(w http.ResponseWriter, r *http.Request)
 Register creates a new user, organization, and admin staff entry atomically. @Summary Register a new Admin @Description Creates a new User, Organization, and links them as Admin Staff. @Tags auth @Accept json @Produce json @Param input body RegisterInput true "Registration Config" @Success 201 \{object\} response.Response\{data=map\[string\]interface\{\}\} "User and Org created" @Failure 400 \{object\} response.Response "Validation Error" @Failure 500 \{object\} response.Response "Internal Server Error" @Router /auth/register \[post\]
 
 <a name="LoginInput"></a>
-## type [LoginInput](<https://github-personal/off-by-2/sal/blob/main/internal/handler/auth.go#L56-L59>)
+## type [LoginInput](<https://github.com-personal/off-by-2/sal/blob/main/internal/handler/auth.go#L56-L59>)
 
 LoginInput defines the payload for login.
 
@@ -368,7 +369,7 @@ type LoginInput struct {
 ```
 
 <a name="RegisterInput"></a>
-## type [RegisterInput](<https://github-personal/off-by-2/sal/blob/main/internal/handler/auth.go#L47-L53>)
+## type [RegisterInput](<https://github.com-personal/off-by-2/sal/blob/main/internal/handler/auth.go#L47-L53>)
 
 RegisterInput defines the payload for admin registration.
 
@@ -380,6 +381,54 @@ type RegisterInput struct {
     LastName  string `json:"last_name" validate:"required"`
     OrgName   string `json:"org_name" validate:"required"`
 }
+```
+
+# middleware
+
+```go
+import "github.com/off-by-2/sal/internal/middleware"
+```
+
+Package middleware provides HTTP middleware handlers like Auth and Permissions.
+
+## Index
+
+- [func AuthMiddleware\(jwtSecret string\) func\(http.Handler\) http.Handler](<#AuthMiddleware>)
+- [func RequirePermission\(db \*database.Postgres, required string\) func\(http.Handler\) http.Handler](<#RequirePermission>)
+- [type ContextKey](<#ContextKey>)
+
+
+<a name="AuthMiddleware"></a>
+## func [AuthMiddleware](<https://github.com-personal/off-by-2/sal/blob/main/internal/middleware/auth.go#L20>)
+
+```go
+func AuthMiddleware(jwtSecret string) func(http.Handler) http.Handler
+```
+
+AuthMiddleware validates the JWT access token from the Authorization header.
+
+<a name="RequirePermission"></a>
+## func [RequirePermission](<https://github.com-personal/off-by-2/sal/blob/main/internal/middleware/permissions.go#L15>)
+
+```go
+func RequirePermission(db *database.Postgres, required string) func(http.Handler) http.Handler
+```
+
+RequirePermission ensures the user has a specific permission in their staff record. The required perm should be in the format "resource.action", e.g. "notes.create"
+
+<a name="ContextKey"></a>
+## type [ContextKey](<https://github.com-personal/off-by-2/sal/blob/main/internal/middleware/auth.go#L14>)
+
+ContextKey is used for typed keys in requests context
+
+```go
+type ContextKey string
+```
+
+<a name="ClaimsKey"></a>ClaimsKey is the key to fetch valid claims inside an HTTP Request context.
+
+```go
+const ClaimsKey ContextKey = "claims"
 ```
 
 # repository
@@ -424,7 +473,7 @@ var (
 ```
 
 <a name="Organization"></a>
-## type [Organization](<https://github-personal/off-by-2/sal/blob/main/internal/repository/orgs.go#L13-L20>)
+## type [Organization](<https://github.com-personal/off-by-2/sal/blob/main/internal/repository/orgs.go#L13-L20>)
 
 Organization represents a row in the organizations table.
 
@@ -440,7 +489,7 @@ type Organization struct {
 ```
 
 <a name="OrganizationRepository"></a>
-## type [OrganizationRepository](<https://github-personal/off-by-2/sal/blob/main/internal/repository/orgs.go#L23-L25>)
+## type [OrganizationRepository](<https://github.com-personal/off-by-2/sal/blob/main/internal/repository/orgs.go#L23-L25>)
 
 OrganizationRepository handles database operations for organizations.
 
@@ -451,7 +500,7 @@ type OrganizationRepository struct {
 ```
 
 <a name="NewOrganizationRepository"></a>
-### func [NewOrganizationRepository](<https://github-personal/off-by-2/sal/blob/main/internal/repository/orgs.go#L28>)
+### func [NewOrganizationRepository](<https://github.com-personal/off-by-2/sal/blob/main/internal/repository/orgs.go#L28>)
 
 ```go
 func NewOrganizationRepository(db *database.Postgres) *OrganizationRepository
@@ -460,7 +509,7 @@ func NewOrganizationRepository(db *database.Postgres) *OrganizationRepository
 NewOrganizationRepository creates a new OrganizationRepository.
 
 <a name="OrganizationRepository.CreateOrg"></a>
-### func \(\*OrganizationRepository\) [CreateOrg](<https://github-personal/off-by-2/sal/blob/main/internal/repository/orgs.go#L33>)
+### func \(\*OrganizationRepository\) [CreateOrg](<https://github.com-personal/off-by-2/sal/blob/main/internal/repository/orgs.go#L33>)
 
 ```go
 func (r *OrganizationRepository) CreateOrg(ctx context.Context, o *Organization) error
@@ -469,7 +518,7 @@ func (r *OrganizationRepository) CreateOrg(ctx context.Context, o *Organization)
 CreateOrg inserts a new organization.
 
 <a name="Staff"></a>
-## type [Staff](<https://github-personal/off-by-2/sal/blob/main/internal/repository/staff.go#L12-L20>)
+## type [Staff](<https://github.com-personal/off-by-2/sal/blob/main/internal/repository/staff.go#L12-L20>)
 
 Staff represents a row in the staff table.
 
@@ -486,7 +535,7 @@ type Staff struct {
 ```
 
 <a name="StaffRepository"></a>
-## type [StaffRepository](<https://github-personal/off-by-2/sal/blob/main/internal/repository/staff.go#L23-L25>)
+## type [StaffRepository](<https://github.com-personal/off-by-2/sal/blob/main/internal/repository/staff.go#L23-L25>)
 
 StaffRepository handles database operations for staff.
 
@@ -497,7 +546,7 @@ type StaffRepository struct {
 ```
 
 <a name="NewStaffRepository"></a>
-### func [NewStaffRepository](<https://github-personal/off-by-2/sal/blob/main/internal/repository/staff.go#L28>)
+### func [NewStaffRepository](<https://github.com-personal/off-by-2/sal/blob/main/internal/repository/staff.go#L28>)
 
 ```go
 func NewStaffRepository(db *database.Postgres) *StaffRepository
@@ -506,7 +555,7 @@ func NewStaffRepository(db *database.Postgres) *StaffRepository
 NewStaffRepository creates a new StaffRepository.
 
 <a name="StaffRepository.CreateStaff"></a>
-### func \(\*StaffRepository\) [CreateStaff](<https://github-personal/off-by-2/sal/blob/main/internal/repository/staff.go#L33>)
+### func \(\*StaffRepository\) [CreateStaff](<https://github.com-personal/off-by-2/sal/blob/main/internal/repository/staff.go#L33>)
 
 ```go
 func (r *StaffRepository) CreateStaff(ctx context.Context, s *Staff) error
@@ -515,7 +564,7 @@ func (r *StaffRepository) CreateStaff(ctx context.Context, s *Staff) error
 CreateStaff inserts a new staff member.
 
 <a name="User"></a>
-## type [User](<https://github-personal/off-by-2/sal/blob/main/internal/repository/users.go#L23-L36>)
+## type [User](<https://github.com-personal/off-by-2/sal/blob/main/internal/repository/users.go#L23-L36>)
 
 User represents a row in the users table.
 
@@ -537,7 +586,7 @@ type User struct {
 ```
 
 <a name="UserRepository"></a>
-## type [UserRepository](<https://github-personal/off-by-2/sal/blob/main/internal/repository/users.go#L39-L41>)
+## type [UserRepository](<https://github.com-personal/off-by-2/sal/blob/main/internal/repository/users.go#L39-L41>)
 
 UserRepository handles database operations for users.
 
@@ -548,7 +597,7 @@ type UserRepository struct {
 ```
 
 <a name="NewUserRepository"></a>
-### func [NewUserRepository](<https://github-personal/off-by-2/sal/blob/main/internal/repository/users.go#L44>)
+### func [NewUserRepository](<https://github.com-personal/off-by-2/sal/blob/main/internal/repository/users.go#L44>)
 
 ```go
 func NewUserRepository(db *database.Postgres) *UserRepository
@@ -557,7 +606,7 @@ func NewUserRepository(db *database.Postgres) *UserRepository
 NewUserRepository creates a new UserRepository.
 
 <a name="UserRepository.CreateUser"></a>
-### func \(\*UserRepository\) [CreateUser](<https://github-personal/off-by-2/sal/blob/main/internal/repository/users.go#L49>)
+### func \(\*UserRepository\) [CreateUser](<https://github.com-personal/off-by-2/sal/blob/main/internal/repository/users.go#L49>)
 
 ```go
 func (r *UserRepository) CreateUser(ctx context.Context, u *User) error
@@ -566,7 +615,7 @@ func (r *UserRepository) CreateUser(ctx context.Context, u *User) error
 CreateUser inserts a new user into the database.
 
 <a name="UserRepository.GetUserByEmail"></a>
-### func \(\*UserRepository\) [GetUserByEmail](<https://github-personal/off-by-2/sal/blob/main/internal/repository/users.go#L74>)
+### func \(\*UserRepository\) [GetUserByEmail](<https://github.com-personal/off-by-2/sal/blob/main/internal/repository/users.go#L74>)
 
 ```go
 func (r *UserRepository) GetUserByEmail(ctx context.Context, email string) (*User, error)
@@ -591,7 +640,7 @@ Package response provides helper functions for sending consistent JSON responses
 
 
 <a name="Error"></a>
-## func [Error](<https://github-personal/off-by-2/sal/blob/main/internal/response/response.go#L41>)
+## func [Error](<https://github.com-personal/off-by-2/sal/blob/main/internal/response/response.go#L41>)
 
 ```go
 func Error(w http.ResponseWriter, status int, message string)
@@ -600,7 +649,7 @@ func Error(w http.ResponseWriter, status int, message string)
 Error sends a standardized error response.
 
 <a name="JSON"></a>
-## func [JSON](<https://github-personal/off-by-2/sal/blob/main/internal/response/response.go#L21>)
+## func [JSON](<https://github.com-personal/off-by-2/sal/blob/main/internal/response/response.go#L21>)
 
 ```go
 func JSON(w http.ResponseWriter, status int, data interface{})
@@ -609,7 +658,7 @@ func JSON(w http.ResponseWriter, status int, data interface{})
 JSON sends a JSON response with the given status code and data.
 
 <a name="ValidationError"></a>
-## func [ValidationError](<https://github-personal/off-by-2/sal/blob/main/internal/response/response.go#L47>)
+## func [ValidationError](<https://github.com-personal/off-by-2/sal/blob/main/internal/response/response.go#L47>)
 
 ```go
 func ValidationError(w http.ResponseWriter, err error)
@@ -618,7 +667,7 @@ func ValidationError(w http.ResponseWriter, err error)
 ValidationError sends a response with detailed validation errors. It parses go\-playground/validator errors into a simplified map.
 
 <a name="Response"></a>
-## type [Response](<https://github-personal/off-by-2/sal/blob/main/internal/response/response.go#L13-L18>)
+## type [Response](<https://github.com-personal/off-by-2/sal/blob/main/internal/response/response.go#L13-L18>)
 
 Response represents the standard JSON envelope for all API responses.
 

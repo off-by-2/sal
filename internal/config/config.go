@@ -4,16 +4,18 @@ package config
 import (
 	"log"
 	"os"
+	"strings"
 
 	"github.com/joho/godotenv"
 )
 
 // Config holds all configuration values for the application.
 type Config struct {
-	DatabaseURL string
-	Port        string
-	Env         string
-	JWTSecret   string
+	DatabaseURL    string
+	Port           string
+	Env            string
+	JWTSecret      string
+	AllowedOrigins []string
 }
 
 // Load retrieves configuration from environment variables.
@@ -25,11 +27,20 @@ func Load() *Config {
 		log.Println("No .env file found, using system environment variables")
 	}
 
+	originsStr := getEnv("CORS_ALLOWED_ORIGINS", "http://localhost:3000")
+	origins := []string{}
+	if originsStr != "" {
+		for _, o := range strings.Split(originsStr, ",") {
+			origins = append(origins, strings.TrimSpace(o))
+		}
+	}
+
 	return &Config{
-		DatabaseURL: getEnv("DATABASE_URL", "postgres://salvia:localdev@localhost:5432/salvia?sslmode=disable"),
-		Port:        getEnv("PORT", "8000"),
-		Env:         getEnv("ENV", "development"),
-		JWTSecret:   getEnv("JWT_SECRET", "super-secret-dev-key-change-me"),
+		DatabaseURL:    getEnv("DATABASE_URL", "postgres://salvia:localdev@localhost:5432/salvia?sslmode=disable"),
+		Port:           getEnv("PORT", "8000"),
+		Env:            getEnv("ENV", "development"),
+		JWTSecret:      getEnv("JWT_SECRET", "super-secret-dev-key-change-me"),
+		AllowedOrigins: origins,
 	}
 }
 

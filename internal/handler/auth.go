@@ -222,7 +222,22 @@ func (h *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// TODO: Store Refresh Token hash in DB
+	// 5a. Hash and Store Refresh Token in DB
+	hashedRefreshToken, err := auth.HashPassword(refreshToken)
+	if err != nil {
+		response.Error(w, http.StatusInternalServerError, "Failed to secure token")
+		return
+	}
+
+	_, err = h.DB.Pool.Exec(r.Context(), `
+		INSERT INTO refresh_tokens (token_hash, user_id, expires_at)
+		VALUES ($1, $2, $3)`,
+		hashedRefreshToken, user.ID, time.Now().Add(7*24*time.Hour),
+	)
+	if err != nil {
+		response.Error(w, http.StatusInternalServerError, "Failed to save session")
+		return
+	}
 
 	// 6. Set Refresh Cookie
 	http.SetCookie(w, &http.Cookie{

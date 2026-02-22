@@ -27,6 +27,7 @@ jobs:
         with:
           version: latest
           args: --timeout=5m
+          install-mode: goinstall
 
       - name: Run Tests (With Coverage)
         run: go test -v -coverprofile=coverage.out ./...

@@ -9,7 +9,7 @@ API_CMD=$(GO_RUN) ./cmd/api
 # Database Connection (for psql)
 DB_DSN=$(DATABASE_URL)
 
-.PHONY: all build run test clean lint migrate-up migrate-down migrate-status docker-up docker-down help
+.PHONY: all build run test clean lint migrate-up migrate-down migrate-status docker-up docker-down help setup
 
 help: ## Show this help message
 	@echo 'Usage:'
@@ -17,6 +17,16 @@ help: ## Show this help message
 	@echo ''
 	@echo 'Targets:'
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+
+setup: ## Install developer dependencies (goose, swag, pkgsite, gomarkdoc, golangci-lint)
+	@echo "Installing Go tools..."
+	$(GO_CMD) install github.com/pressly/goose/v3/cmd/goose@latest
+	$(GO_CMD) install github.com/swaggo/swag/cmd/swag@latest
+	$(GO_CMD) install golang.org/x/pkgsite/cmd/pkgsite@latest
+	$(GO_CMD) install github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest
+	@echo "Installing golangci-lint via official install script..."
+	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(shell go env GOPATH)/bin v1.64.4
+	@echo "Setup complete. Make sure $$(go env GOPATH)/bin is in your PATH."
 
 all: lint test build ## Run linter, tests, and build
 
