@@ -22,7 +22,15 @@ cd sal
 cp .env.example .env
 ```
 
-### 2. Start the database
+### 2. Install Dependencies
+
+Install the Go toolchain tools required by the Makefile (linter, swagger generator, database migration tool, and documentation server).
+
+```bash
+make setup
+```
+
+### 3. Start the database
 
 ```bash
 docker compose up postgres -d
@@ -70,6 +78,7 @@ We use `make` for common tasks:
 
 | Command | Description |
 |---------|-------------|
+| `make setup` | Install Go development tools and linters |
 | `make all` | Run linter, tests, and build |
 | `make run` | Run API locally |
 | `make test` | Run tests with coverage |
