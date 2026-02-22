@@ -45,7 +45,7 @@ test: ## Run unit tests with coverage
 
 lint: ## Run golangci-lint
 	@echo "Running linter..."
-	golangci-lint run
+	$(shell go env GOPATH)/bin/golangci-lint run
 
 clean: ## Clean build artifacts
 	rm -rf bin/ docs/ docs.go
