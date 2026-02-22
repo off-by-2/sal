@@ -1,19 +1,17 @@
+version: 2
+
 run:
   timeout: 5m
-  modules-download-mode: readonly
 
 linters:
+  disable-all: true
   enable:
     - errcheck
-    - gosimple
     - govet
     - ineffassign
     - staticcheck
-    - typecheck
     - unused
     - revive    # Replacement for golint (enforces comments)
-    - gofmt
-    - goimports
     - misspell
     - unconvert
     - unparam

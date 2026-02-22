@@ -47,7 +47,7 @@ func TestNewRefreshToken(t *testing.T) {
 	}
 }
 
-func TestParseAccessToken_Expired(t *testing.T) {
+func TestParseAccessToken_Expired(_ *testing.T) {
 	// We can't easily mock time in the current token implementation without refactoring.
 	// But we can test malformed tokens.
 }
