@@ -70,7 +70,7 @@ func (s *Server) routes() {
 	s.Router.Use(middleware.Logger)
 	s.Router.Use(middleware.Recoverer)
 	s.Router.Use(cors.Handler(cors.Options{
-		AllowedOrigins:   []string{"*"}, // TODO: Restrict in production
+		AllowedOrigins:   s.Config.AllowedOrigins,
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
 		ExposedHeaders:   []string{"Link"},
@@ -91,7 +91,7 @@ func (s *Server) routes() {
 
 	// API Group
 	s.Router.Route("/api/v1", func(r chi.Router) {
-		r.Get("/", func(w http.ResponseWriter, r *http.Request) {
+		r.Get("/", func(w http.ResponseWriter, _ *http.Request) {
 			response.JSON(w, http.StatusOK, map[string]string{"message": "Welcome to Sal API v1"})
 		})
 
