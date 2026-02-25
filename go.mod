@@ -1,6 +1,6 @@
 module github.com/off-by-2/sal
 
-go 1.24.2
+go 1.25.0
 
 require (
 	github.com/go-chi/chi/v5 v5.2.5
@@ -9,10 +9,12 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.3.1
 	github.com/jackc/pgx/v5 v5.8.0
 	github.com/joho/godotenv v1.5.1
-	github.com/pressly/goose/v3 v3.26.0
+	github.com/pressly/goose/v3 v3.27.0
 	github.com/swaggo/http-swagger v1.3.4
 	github.com/swaggo/swag v1.16.6
 )
+
+require github.com/rogpeppe/go-internal v1.14.1 // indirect
 
 require (
 	github.com/KyleBanks/depth v1.2.1 // indirect
@@ -35,7 +37,7 @@ require (
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/crypto v0.48.0
 	golang.org/x/mod v0.32.0 // indirect
-	golang.org/x/net v0.49.0 // indirect
+	golang.org/x/net v0.50.0 // indirect
 	golang.org/x/sync v0.19.0 // indirect
 	golang.org/x/sys v0.41.0 // indirect
 	golang.org/x/text v0.34.0 // indirect
