@@ -87,7 +87,7 @@ func TestError(t *testing.T) {
 	}
 }
 
-func TestValidationError(t *testing.T) {
+func TestValidationError(_ *testing.T) {
 	// Standard error fallback
 	w := httptest.NewRecorder()
 	ValidationError(w, errors.New("simple error"))

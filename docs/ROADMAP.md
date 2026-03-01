@@ -39,11 +39,27 @@ Replcaed Supabase Auth. Complete.
 
 ### 3d. Middleware
 - [x] **Auth Middleware**: Check `Authorization: Bearer ...`.
-- [ ] **Permission Middleware**: Check `staff.permissions` JSON.
+- [x] **Permission Middleware**: Check `staff.permissions` JSON.
 
 ---
 
-## 🔮 Phase 4: Organization Management
+## 🔮 Phase 4: Billing & Onboarding (SaaS/Stripe)
+
+Manage paid subscriptions, Stripe integration, and the onboarding flow. Estimated: **4-5 Days**.
+
+### 4a. Stripe Integration (Backend)
+- [ ] **Data Models**: Add `subscriptions`, `packages` tables, and link `stripe_customer_id` to organizations.
+- [ ] **Checkout Route**: Generate Stripe Checkout Sessions `POST /billing/checkout`.
+- [ ] **Webhook Handler**: `POST /billing/webhook` to handle `checkout.session.completed` for auto-provisioning.
+
+### 4b. Account Provisioning & Email
+- [ ] **Email Service**: Integrate SMTP/AWS SES/SendGrid for transactional emails.
+- [ ] **Welcome Flow**: Auto-create Org & Admin user upon successful payment.
+- [ ] **Set Password Route**: `POST /auth/set-password` securely handle the one-time setup token.
+
+---
+
+## 🔮 Phase 5: Organization Management
 
 Manage Tenants, Staff, and Patients. Estimated: **3-4 Days**.
 
@@ -63,35 +79,35 @@ Manage Tenants, Staff, and Patients. Estimated: **3-4 Days**.
 
 ---
 
-## 🔮 Phase 5: Clinical Forms & Templates
+## 🔮 Phase 6: Clinical Forms & Templates
 
 Dynamic Form Builder. Estimated: **3 Days**.
 
-### 5a. Templates
+### 6a. Templates
 - [ ] CRUD for `form_templates` (JSON Schema).
 - [ ] Versioning logic (`template_key` + `version`).
 
-### 5b. Document Flows
+### 6b. Document Flows
 - [ ] `document_flows` (Workflow definitions).
 
 ---
 
-## 🔮 Phase 6: Core Product (AI Notes)
+## 🔮 Phase 7: Core Product (AI Notes)
 
 Audio Processing Pipeline. Estimated: **5-7 Days**.
 
-### 6a. Audio Upload
+### 7a. Audio Upload
 - [ ] `POST /audio-notes`: Upload file to S3/MinIO.
 - [ ] Architecture: Signed URLs vs Direct Upload.
 
-### 6b. Transcription & Generation
+### 7b. Transcription & Generation
 - [ ] **Worker**: Background job to process audio.
 - [ ] **LLM**: Integration with Anthropic/OpenAI API.
 - [ ] **Optimistic Locking**: Handle concurrent edits on `generated_notes`.
 
 ---
 
-## 🔮 Phase 7: Advanced Features
+## 🔮 Phase 8: Advanced Features
 - [ ] **WS**: WebSockets for real-time status updates.
 - [ ] **2FA**: TOTP implementation.
 - [ ] **OAuth**: Google Login.
